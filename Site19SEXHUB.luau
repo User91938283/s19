@@ -572,14 +572,14 @@ local toggle_insta_kill; toggle_insta_kill = @native function(enabled: boolean)
         return;
     end;
     local FireServer;
+	local found_table;
 	for _,v in getgc(true) do
-    	if type(v) == "function" then
-        	if debug.info(v, "n") == "FireServer" then
-	            FireServer = v;
-            	break;
-        	end;
-    	end;
-	end;
+        if type(v) == 'table' and rawget(v, "FireServer") then
+            FireServer = rawget(v, "FireServer");
+            found_table = v;
+            break;
+        end;
+    end;
     if not FireServer then
         return;
     end;
