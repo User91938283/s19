@@ -34,6 +34,3 @@ for _,v in getgc(true) do
 		end;
 	end;
 end;
-while not gun_settings._mouseDown do
-	gun_settings._mouseDown = true;
-end;
