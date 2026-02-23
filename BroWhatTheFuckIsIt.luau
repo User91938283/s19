@@ -29,11 +29,11 @@ for _,v in getgc(true) do
 				network:FireServer("setToolState", "Reload");
 				network:FireServer("setToolState", "Reloaded");
 				gun_settings.Ammo = 999;
-				if gun_settings and gun_settings._mouseDown == false then
-					gun_settings._mouseDown = true;
-				end;
 				hook(gun_settings);
 			end));
 		end;
 	end;
+end;
+while not gun_settings._mouseDown do
+	gun_settings._mouseDown = true;
 end;
