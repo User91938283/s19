@@ -531,21 +531,29 @@ weapon_section_1:CreateToggle({
 	Name = "Disable RPM";
 	Description = "Hooks task.wait";
 	Callback = @native function(state: boolean): ()
-		if state then
-			local hook; hook = hookfunction(task.wait, newcclosure(function(...: number?): ()
-				if checkcaller() then return hook(...); end;
-				local time: number? = ...
-				local caller = debug.info(3, "f");
-				if caller and debug.info(caller, "n") == "_activateDischarge" then time = nil :: never; end;
-				return hook(time);
-			end));
-		else
-			if isfunctionhooked(task.wait) then
-				restorefunction(task.wait);
-			end;
-		end;
-		return;
-	end,
+    if state then
+        local original_wait = task.wait;
+        local hook; hook = hookfunction(task.wait, newcclosure(function(...): number?
+            if checkcaller() then 
+                return hook(...);
+            end;
+            local caller_func = debug.info(3, "f");
+            if not caller_func then 
+                return hook(...);
+            end;
+            local caller_name = debug.info(caller_func, "n");
+            local caller_source = debug.info(caller_func, "s");
+            if caller_name == "_activateDischarge" then
+                return original_wait();
+            end;
+            return hook(...);
+        end));
+    else
+        if isfunctionhooked(task.wait) then
+            restorefunction(task.wait);
+        end;
+    end;
+end;
 });
 
 door_section:CreateToggle({
