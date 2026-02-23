@@ -580,17 +580,27 @@ local toggle_insta_kill; toggle_insta_kill = @native function(enabled: boolean)
 		end;
 		return hook(...);
 	end));
-	repeat task.wait() until flux_encode;
+	local timeout = 0
+	repeat 
+    	task.wait();
+    	timeout = timeout + 1;
+    	if timeout > 100 then
+        	return;
+		end;
+	until flux_encode;
+	local original_namecall = getrawmetatable(game).__namecall;
 	local hook; hook = hookmetamethod(game, "__namecall", newcclosure(function(...)
 		local Args: {any} = {...};
 		local Self = Args[1];
 		table.remove(Args, 1);
-		if not checkcaller() and Self and typeof(Self) == "Instance" and getnamecallmethod() == "FireServer" or getnamecallmethod() == "InvokeServer" and Self.ClassName == "RemoteEvent" or Self.ClassName == "RemoteFunction" then
+		if not checkcaller() and Self and typeof(Self) == "Instance" and 
+   (getnamecallmethod() == "FireServer" or getnamecallmethod() == "InvokeServer") and 
+   (Self.ClassName == "RemoteEvent" or Self.ClassName == "RemoteFunction") then
 			local decoded_args = decode_args(Args[1], flux_encode, false);
 			local remote_args = string.split(decoded_args, ",");
 			if remote_args[3] == '"Discharge"' then
 				for i = 1, states.insta_kill_send_count do
-					hook(...);
+					original_namecall(...);
 				end;
 			end;
 		end;
