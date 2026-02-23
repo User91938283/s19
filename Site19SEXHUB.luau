@@ -557,55 +557,83 @@ door_section:CreateToggle({
 	end,
 });
 local toggle_insta_kill; toggle_insta_kill = @native function(enabled: boolean)
-	if not enabled then
-		restorefunction(getrawmetatable(game).__namecall);
-		return;
-	end;
-	local lua_gc = getgc(true);
-	local FireServer;
-	for _,v in lua_gc do
-		if type(v) == 'table' and rawget(v, "InvokeServer") and rawget(v, "FireServer") then
-			FireServer = rawget(v, "FireServer")
-			break;
-		end;
-	end;
-	local up_values = debug.getupvalues(FireServer);
-	local net_encode = up_values[2];
+    if not enabled then
+        local mt = getrawmetatable(game);
+        local was_readonly = pcall(debug.getreadonly, mt) and debug.getreadonly(mt);
+        if was_readonly then debug.setreadonly(mt, false); end;
+    	if rawget(mt, "__original_namecall") then
+            mt.__namecall = rawget(mt, "__original_namecall");
+            rawset(mt, "__original_namecall", nil);
+        end;
+        if was_readonly then debug.setreadonly(mt, true) end
+        return;
+    end;
+    if getrawmetatable(game).__original_namecall then
+        return;
+    end;
+    local FireServer;
+    for _,v in getgc(true) do
+        if type(v) == 'table' and rawget(v, "FireServer") then
+            FireServer = rawget(v, "FireServer");
+            break;
+        end;
+    end;
+    if not FireServer then
+        return;
+    end;
+    local up_values = debug.getupvalues(FireServer);
+    if #up_values < 2 then
+        return;
+    end;
+    local net_encode = up_values[2];
+    if type(net_encode) ~= "function" then
+        return;
+    end;
 	local flux_encode;
-	local hook; hook = hookfunction(net_encode, newlclosure(function(...)
-		local args = {...};
-		if not flux_encode then
-			-- warn("meow");
-			flux_encode = args[2];
-		end;
-		return hook(...);
-	end));
-	local timeout = 0
-	repeat 
-    	task.wait();
-    	timeout = timeout + 1;
-    	if timeout > 100 then
-        	return;
-		end;
-	until flux_encode;
-	local original_namecall = getrawmetatable(game).__namecall;
-	local hook; hook = hookmetamethod(game, "__namecall", newcclosure(function(...)
-		local Args: {any} = {...};
-		local Self = Args[1];
-		table.remove(Args, 1);
-		if not checkcaller() and Self and typeof(Self) == "Instance" and 
-   (getnamecallmethod() == "FireServer" or getnamecallmethod() == "InvokeServer") and 
-   (Self.ClassName == "RemoteEvent" or Self.ClassName == "RemoteFunction") then
-			local decoded_args = decode_args(Args[1], flux_encode, false);
-			local remote_args = string.split(decoded_args, ",");
-			if remote_args[3] == '"Discharge"' then
-				for i = 1, states.insta_kill_send_count do
-					original_namecall(...);
-				end;
-			end;
-		end;
-		return hook(...);
-	end));
+    local encode_hook; encode_hook = hookfunction(net_encode, function(...)
+        local args = {...};
+        if not flux_encode and #args >= 2 then
+            flux_encode = args[2];
+        end;
+        return encode_hook(...);
+    end);
+   local timeout = 0;
+    repeat 
+        task.wait();
+        timeout = timeout + 1;
+        if timeout > 100 then
+            return;
+        end;
+    until flux_encode;
+    local mt = getrawmetatable(game);
+    local was_readonly = pcall(debug.getreadonly, mt) and debug.getreadonly(mt);
+    if was_readonly then debug.setreadonly(mt, false); end;
+    local original_namecall = mt.__namecall;
+    rawset(mt, "__original_namecall", original_namecall);
+	mt.__namecall = newcclosure(function(self, ...)
+        if checkcaller() then
+            return original_namecall(self, ...);
+        end;
+        local args = {...};
+        local method = getnamecallmethod();
+        local is_remote_call = method == "FireServer" or method == "InvokeServer";
+        local is_remote_obj = self and typeof(self) == "Instance" and 
+                             (self.ClassName == "RemoteEvent" or self.ClassName == "RemoteFunction");
+        if is_remote_call and is_remote_obj then
+            local success, decoded = pcall(decode_args, args[1], flux_encode, false);
+            if success and decoded then
+                local remote_args = string.split(decoded, ",");
+                if remote_args[3] == '"Discharge"' then
+                    for i = 1, states.insta_kill_send_count do
+                        original_namecall(self, ...);
+                    end;
+                    return;
+                end;
+            end;
+        end;
+        return original_namecall(self, ...);
+    end);
+    if was_readonly then debug.setreadonly(mt, true); end;
 end;
 
 local weapon_section_2 = weapon_tab:CreateSection("Spread");
