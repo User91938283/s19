@@ -3,7 +3,7 @@
 
 --// Flux Network \\--
 local network; for k, v in pairs(getgc(true)) do
-	if typeof(v) == "table" and (rawget(v, "FireServer") and rawget(v, "InvokeServer") and rawget(v, "OnEvent") and rawget(v, "OnFunction")) then
+	if typeof(v) == "table" and ((rawget(v, "FireServer") and typeof(rawget(v, "FireServer")) == "function") and (rawget(v, "InvokeServer") and typeof(rawget(v, "InvokeServer")) == "function") and (rawget(v, "OnEvent") and typeof(rawget(v, "OnEvent")) == "function") and (rawget(v, "OnFunction") and typeof(rawget(v, "OnFunction")) == "function")) then
 		network = {
 			FireServer = newcclosure(@native function(self, ...)
 				return v:FireServer(...);
