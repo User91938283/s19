@@ -15,11 +15,11 @@ for k, v in pairs(getgc(true)) do
 				local args = { ... };
 				if args and args[2] and args[2] == "Discharge" then
 					for i = 1, 3 do
-						FireServer(v, ...);
+						FireServer(self, ...);
 					end;
 					return;
 				end;
-				return FireServer(v, ...);
+				return FireServer(self, ...);
 			end));
 			--if hook_fireserver then FireServer = nil; end;
 		end;
