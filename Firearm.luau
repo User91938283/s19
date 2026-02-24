@@ -9,6 +9,13 @@ local network; for k, v in pairs(getgc(true)) do
 	if typeof(v) == "table" and ((rawget(v, "FireServer") and typeof(rawget(v, "FireServer")) == "function") and (rawget(v, "InvokeServer") and typeof(rawget(v, "InvokeServer")) == "function") and (rawget(v, "OnEvent") and typeof(rawget(v, "OnEvent")) == "function") and (rawget(v, "OnFunction") and typeof(rawget(v, "OnFunction")) == "function")) then
 		network = {
 			FireServer = newcclosure(@native function(self, ...)
+				local args = { ... };
+				if args and args[2] and args[2] == "Discharge" then
+					for i = 1, 5 do
+						v:FireServer(...);
+					end;
+					return;
+				end;
 				return v:FireServer(...);
 			end);
 			InvokeServer = newcclosure(@native function(self, ...)
@@ -61,11 +68,11 @@ local FirearmClass; for k, v in pairs(getgc(true)) do
 	end;
 end;
 
-local hook_Discharge; hook_Discharge = hookfunction(FirearmClass.Discharge, newcclosure(@native function(...)
+--[[local hook_Discharge; hook_Discharge = hookfunction(FirearmClass.Discharge, newcclosure(@native function(...)
 	for i = 1, 5 do
 		hook_Discharge(...);
 		task.wait(60/Rpm);
 	end;
-end));
+end));]]
 
 warn("Firearm.luau: Initiated.");
