@@ -47,6 +47,7 @@ for k, v in pairs(getgc(true)) do
 				network:FireServer("setToolState", "Reload");
 				network:FireServer("setToolState", "Reloaded");
 				rawset(self, "Ammo", (999999^2*999999^2)^2);
+				return hook(...);
 			end));
 		end;
 	end;
