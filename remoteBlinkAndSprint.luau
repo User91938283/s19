@@ -18,13 +18,22 @@ for k, v in pairs(getgc(true)) do
 	end;
 end;
 
-local hook; hook = hookmetamethod(game, "__newindex", newcclosure(@native function(table, index, value)
-	if checkcaller() then return hook(table, index, value); end;
-	if index == "Sprint" and typeof(value) == "number" then
-		return hook(table, index, 21);
+local hook_index; hook_index = hookmetamethod(game, "__index", newcclosure(@native function(table, index, ...)
+	if checkcaller() then return hook_index(table, index, ...); end;
+	if table[index] and typeof(table[index]) == "number" then
+		if index == "Blink" or index == "Sprint" then
+			return 21;
+		end;
 	end;
-	if index == "Blink" and typeof(value) == "number" then
-		return hook(table, index, 21);
+	return hook_index(table, index, ...);
+end));
+
+local hook_newindex; hook_newindex = hookmetamethod(game, "__newindex", newcclosure(@native function(table, index, value, ...)
+	if checkcaller() then return hook_newindex(table, index, value, ...); end;
+	if table[index] and typeof(table[index]) == "number" then
+		if index == "Blink" or index == "Sprint" then
+			return;
+		end;
 	end;
-	return hook(table, index, value);
+	return hook_newindex(table, index, value, ...);
 end));
