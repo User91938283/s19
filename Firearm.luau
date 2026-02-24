@@ -2,25 +2,41 @@
 --!native
 
 --// Flux Network \\--
-local network = {}; for k, v in pairs(getgc(true)) do
+local network; for k, v in pairs(getgc(true)) do
 	if typeof(v) == "table" and (rawget(v, "FireServer") and rawget(v, "InvokeServer") and rawget(v, "OnEvent") and rawget(v, "OnFunction")) then
-		network = v;
+		network = {
+			FireServer = @native function(self, ...)
+				return v:FireServer(...);
+			end;
+			InvokeServer = @native function(self, ...)
+				return v:InvokeServer(...);
+			end;
+			OnEvent = @native function(self, ...)
+				return v:OnEvent(...);
+			end;
+			OnFunction = @native function(self, ...)
+				return v:OnFunction(...);
+			end;
+		};
 		break;
 	end;
 end;
 
 --// A-10 Guns \\--
-for k, v in pairs(getgc(true)) do
-	if typeof(v) == "table" and rawget(v, "Spread") and rawget(v, "Rpm") then
-		rawset(v, "Range", 999999*999999);
-		rawset(v, "Spread", 0);
-		rawset(v, "Damage", 999999*999999);
-		rawset(v, "Rpm", 999999*999999);
-		rawset(v, "Automatic", true);
-		rawset(v, "CanLower", true);
-		rawset(v, "Ammo", 999999*999999);
+local Stats; for k, v in pairs(getgc(true)) do
+	if typeof(v) == "table" and (rawget(v, "Range") and rawget(v, "Spread") and rawget(v, "Rpm") and rawget(v, "Ammo")) then
+		Stats = v;
+		break;
 	end;
 end;
+
+rawset(Stats, "Range", 999999*999999);
+rawset(Stats, "Spread", 0);
+rawset(Stats, "Damage", 999999*999999);
+rawset(Stats, "Rpm", 999999*999999);
+rawset(Stats, "Automatic", true);
+rawset(Stats, "CanLower", true);
+rawset(Stats, "Ammo", 999999*999999);
 
 --// Inf Ammo \\--
 for k, v in getgc(true) do
