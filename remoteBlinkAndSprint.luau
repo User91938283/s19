@@ -1,0 +1,14 @@
+--!nonstrict
+--!native
+game:GetService("Lighting"):WaitForChild("Blink_Overlay_Blur").Size = 0;
+game:GetService("Lighting"):WaitForChild("Blink_Overlay_CC").Brightness = 0;
+for k, v in pairs(getgc(true)) do
+	if (typeof(v) == "table" and (rawget(v, "Blink") and rawget(v, "Sprint"))) then
+		rawset(v, "Blink", 21);
+		rawset(v, "Sprint", 21);
+	end;
+	if (typeof(v) == "table" and (rawget(v, "UpdateSprintBar") and rawget(v, "UpdateBlink"))) then
+		hookfunction(rawget(v, "UpdateSprintBar"), newcclosure(@native function(...) end));
+		hookfunction(rawget(v, "UpdateBlink"), newcclosure(@native function(...) end));
+	end;
+end;
