@@ -45,7 +45,7 @@ for k, v in getgc(true) do
 			local hook__discharge; hook__discharge = hookfunction(rawget(v, "_discharge"), newcclosure(@native function(self)
 				network:FireServer("setToolState", "Reload");
 				network:FireServer("setToolState", "Reloaded");
-				self.Ammo = 999999*999999;
+				rawset(self, "Ammo", 999999*999999);
 				return hook__discharge(self);
 			end));
 		end;
