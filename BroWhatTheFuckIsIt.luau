@@ -26,11 +26,11 @@ end;
 for k, v in getgc(true) do
 	if type(v) == "table" then
 		if rawget(v, "_discharge") then	
-			local hook; hook = hookfunction(rawget(v, "_discharge"), newlclosure(@native function(gun_settings)
+			local hook__discharge; hook__discharge = hookfunction(rawget(v, "_discharge"), newlclosure(@native function(gun_settings)
 				network:FireServer("setToolState", "Reload");
 				network:FireServer("setToolState", "Reloaded");
 				gun_settings.Ammo = 999999*999999;
-				return hook(gun_settings);
+				return hook__discharge(gun_settings);
 			end));
 		end;
 	end;
@@ -43,8 +43,8 @@ local FirearmClass; for k, v in pairs(getgc(true)) do
 	end;
 end;
 
-local hook; hook = hookfunction(FirearmClass.Discharge, newcclosure(@native function(...)
+local hook_Discharge; hook_Discharge = hookfunction(FirearmClass.Discharge, newcclosure(@native function(...)
 	for i = 1, 5 do
-		hook(...);
+		hook_Discharge(...);
 	end;
 end));
