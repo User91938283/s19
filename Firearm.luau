@@ -2,7 +2,7 @@
 --!native
 
 --// Flux Network \\--
-local network = {}; for k, v in getgc(true) do
+local network = {}; for k, v in pairs(getgc(true)) do
 	if typeof(v) == "table" and (rawget(v, "FireServer") and rawget(v, "InvokeServer") and rawget(v, "OnEvent") and rawget(v, "OnFunction")) then
 		network = v;
 		break;
