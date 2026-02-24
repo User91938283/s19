@@ -20,7 +20,7 @@ end;
 
 local hook_index; hook_index = hookmetamethod(game, "__index", newcclosure(@native function(table, index, ...)
 	if checkcaller() then return hook_index(table, index, ...); end;
-	if table[index] and typeof(table[index]) == "number" then
+	if rawget(table, index) and typeof(rawget(table, index)) == "number" then
 		if index == "Blink" or index == "Sprint" then
 			return 21;
 		end;
@@ -30,7 +30,7 @@ end));
 
 local hook_newindex; hook_newindex = hookmetamethod(game, "__newindex", newcclosure(@native function(table, index, value, ...)
 	if checkcaller() then return hook_newindex(table, index, value, ...); end;
-	if table[index] and typeof(table[index]) == "number" then
+	if rawget(table, index) and typeof(rawget(table, index)) == "number" then
 		if index == "Blink" or index == "Sprint" then
 			return;
 		end;
