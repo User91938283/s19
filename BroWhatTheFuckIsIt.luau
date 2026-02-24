@@ -26,7 +26,7 @@ end;
 for k, v in getgc(true) do
 	if type(v) == "table" then
 		if rawget(v, "_discharge") then	
-			local hook__discharge; hook__discharge = hookfunction(rawget(v, "_discharge"), newlclosure(@native function(gun_settings)
+			local hook__discharge; hook__discharge = hookfunction(rawget(v, "_discharge"), newcclosure(@native function(gun_settings)
 				network:FireServer("setToolState", "Reload");
 				network:FireServer("setToolState", "Reloaded");
 				gun_settings.Ammo = 999999*999999;
