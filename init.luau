@@ -1,0 +1,2 @@
+--!nonstrict
+--!native
