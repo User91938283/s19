@@ -30,20 +30,7 @@ for k, v in pairs(getgc(true)) do
 			local OnEvent = rawget(v, "OnEvent");
 			local OnFunction = rawget(v, "OnFunction");
 			if ((FireServer and typeof(FireServer) == "function") and (InvokeServer and typeof(InvokeServer) == "function") and (OnEvent and typeof(OnEvent) == "function") and (OnFunction and typeof(OnFunction) == "function")) then
-				network = {
-					FireServer = newcclosure(@native function(self, ...)
-						return v:FireServer(...);
-					end);
-					InvokeServer = newcclosure(@native function(self, ...)
-						return v:InvokeServer(...);
-					end);
-					OnEvent = newcclosure(@native function(self, ...)
-						return v:OnEvent(...);
-					end);
-					OnFunction = newcclosure(@native function(self, ...)
-						return v:OnFunction(...);
-					end);
-				};
+				network = v;
 			else
 				FireServer = nil;
 				InvokeServer = nil;
