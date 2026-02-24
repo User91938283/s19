@@ -1,6 +1,10 @@
 --!nonstrict
 --!native
 
+if not hookmetamethod or not newcclosure or not getgc or not cloneref or not isfunctionhooked then
+	return error("unsupported", 2);
+end;
+
 --// Flux Network \\--
 local network; for k, v in pairs(getgc(true)) do
 	if typeof(v) == "table" and ((rawget(v, "FireServer") and typeof(rawget(v, "FireServer")) == "function") and (rawget(v, "InvokeServer") and typeof(rawget(v, "InvokeServer")) == "function") and (rawget(v, "OnEvent") and typeof(rawget(v, "OnEvent")) == "function") and (rawget(v, "OnFunction") and typeof(rawget(v, "OnFunction")) == "function")) then
@@ -23,20 +27,17 @@ local network; for k, v in pairs(getgc(true)) do
 end;
 
 --// A-10 Guns \\--
-local Stats; for k, v in pairs(getgc(true)) do
+for k, v in pairs(getgc(true)) do
 	if typeof(v) == "table" and (rawget(v, "Range") and rawget(v, "Spread") and rawget(v, "Rpm") and rawget(v, "Ammo")) then
-		Stats = v;
-		break;
+		rawset(v, "Range", 999999*999999);
+		rawset(v, "Spread", 0);
+		rawset(v, "Damage", 999999*999999);
+		rawset(v, "Rpm", 999999*999999);
+		rawset(v, "Automatic", true);
+		rawset(v, "CanLower", true);
+		rawset(v, "Ammo", 999999*999999);
 	end;
 end;
-
-rawset(Stats, "Range", 999999*999999);
-rawset(Stats, "Spread", 0);
-rawset(Stats, "Damage", 999999*999999);
-rawset(Stats, "Rpm", 999999*999999);
-rawset(Stats, "Automatic", true);
-rawset(Stats, "CanLower", true);
-rawset(Stats, "Ammo", 999999*999999);
 
 --// Inf Ammo \\--
 for k, v in getgc(true) do
