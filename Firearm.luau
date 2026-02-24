@@ -5,18 +5,18 @@
 local network; for k, v in pairs(getgc(true)) do
 	if typeof(v) == "table" and (rawget(v, "FireServer") and rawget(v, "InvokeServer") and rawget(v, "OnEvent") and rawget(v, "OnFunction")) then
 		network = {
-			FireServer = @native function(self, ...)
+			FireServer = newcclosure(@native function(self, ...)
 				return v:FireServer(...);
-			end;
-			InvokeServer = @native function(self, ...)
+			end);
+			InvokeServer = newcclosure(@native function(self, ...)
 				return v:InvokeServer(...);
-			end;
-			OnEvent = @native function(self, ...)
+			end);
+			OnEvent = newcclosure(@native function(self, ...)
 				return v:OnEvent(...);
-			end;
-			OnFunction = @native function(self, ...)
+			end);
+			OnFunction = newcclosure(@native function(self, ...)
 				return v:OnFunction(...);
-			end;
+			end);
 		};
 		break;
 	end;
