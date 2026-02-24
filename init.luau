@@ -1,7 +1,5 @@
 --!nonstrict
 --!native
-local Players = cloneref(game:GetService("Players"));
-local RunService = cloneref(game:GetService("RunService"));
 local func = newcclosure(@native function(str)
 	if str and typeof(str) == "string" then
 		return loadstring(game:HttpGet(str))();
@@ -10,8 +8,8 @@ local func = newcclosure(@native function(str)
 	end;
 end);
 func("https://raw.githubusercontent.com/User91938283/s19/refs/heads/main/remoteBlinkAndSprint.luau");
-Players.LocalPlayer.CharacterAdded:Connect(newcclosure(@native function(...)
-	RunService.PostSimulation:Wait();
+cloneref(game:GetService("Players")).LocalPlayer.CharacterAdded:Connect(newcclosure(@native function(...)
+	cloneref(game:GetService("RunService")).PostSimulation:Wait();
 	func("https://raw.githubusercontent.com/User91938283/s19/refs/heads/main/remoteBlinkAndSprint.luau");
 end));
 func("https://raw.githubusercontent.com/User91938283/s19/refs/heads/main/Firearm.luau");
