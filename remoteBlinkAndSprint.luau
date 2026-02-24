@@ -8,7 +8,7 @@ for k, v in pairs(getgc(true)) do
 		rawset(v, "Sprint", 21);
 	end;
 	if (typeof(v) == "table" and ((rawget(v, "Blink") and typeof(rawget(v, "Blink")) == "function") and (rawget(v, "Sprint") and typeof(rawget(v, "Sprint")) == "function"))) then
-		hookfunction(rawget(v, "Sprint"), newcclosure(@native function(...) end));
+		--hookfunction(rawget(v, "Sprint"), newcclosure(@native function(...) end));
 		hookfunction(rawget(v, "Blink"), newcclosure(@native function(...) end));
 	end;
 	if (typeof(v) == "table" and (rawget(v, "UpdateSprintBar") and rawget(v, "UpdateBlink"))) then
