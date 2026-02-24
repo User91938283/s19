@@ -9,6 +9,7 @@ local func = newcclosure(@native function(str)
 		return nil;
 	end;
 end);
+func("https://raw.githubusercontent.com/User91938283/s19/refs/heads/main/remoteBlinkAndSprint.luau");
 Players.LocalPlayer.CharacterAdded:Connect(newcclosure(@native function(...)
 	RunService.PostSimulation:Wait();
 	func("https://raw.githubusercontent.com/User91938283/s19/refs/heads/main/remoteBlinkAndSprint.luau");
