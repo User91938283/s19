@@ -1,5 +1,6 @@
 --!nonstrict
 --!native
+local Rpm, Num; Rpm, Num = 999, Rpm*2;
 local network = {};
 for k, v in pairs(getgc(true)) do
 	if typeof(v) == "table" then
@@ -29,13 +30,13 @@ end;
 for k, v in pairs(getgc(true)) do
 	if typeof(v) == "table" then
 		if rawget(v, "Range") and rawget(v, "Spread") and rawget(v, "Rpm") and rawget(v, "Automatic") and rawget(v, "Ammo") then
-			rawset(v, "Range", (999999^2*999999^2)^2);
+			rawset(v, "Range", Num);
 			rawset(v, "Spread", 0);
-			rawset(v, "Damage", (999999^2*999999^2)^2);
-			rawset(v, "Rpm", (999999^2*999999^2)^2);
+			rawset(v, "Damage", Num);
+			rawset(v, "Rpm", Rpm);
 			rawset(v, "Automatic", true);
 			rawset(v, "CanLower", true);
-			rawset(v, "Ammo", (999999^2*999999^2)^2)
+			rawset(v, "Ammo", Num)
 		end;
 	end;
 end;
@@ -46,7 +47,7 @@ for k, v in pairs(getgc(true)) do
 				local self = select(1, ...);
 				network:FireServer("setToolState", "Reload");
 				network:FireServer("setToolState", "Reloaded");
-				rawset(self, "Ammo", (999999^2*999999^2)^2);
+				rawset(self, "Ammo", Num);
 				return hook(...);
 			end));
 		end;
