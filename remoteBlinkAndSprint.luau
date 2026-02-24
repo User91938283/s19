@@ -22,7 +22,8 @@ local hook; hook = hookmetamethod(game, "__newindex", newcclosure(@native functi
 	if checkcaller() then return hook(table, index, value); end;
 	if index == "Sprint" and typeof(value) == "number" then
 		return hook(table, index, 21);
-	elseif index == "Blink" and typeof(value) == "number" then
+	end;
+	if index == "Blink" and typeof(value) == "number" then
 		return hook(table, index, 21);
 	end;
 	return hook(table, index, value);
