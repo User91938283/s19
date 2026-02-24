@@ -11,17 +11,17 @@ for k, v in pairs(getgc(true)) do
 	if typeof(v) == "table" then
 		local FireServer = rawget(v, "FireServer");
 		if (FireServer and typeof(FireServer) == "function" and not isfunctionhooked(FireServer)) then
-			local hook_fireserver; hook_fireserver = hookfunction(FireServer, newcclosure(@native function(self, ...)
+			hookfunction(FireServer, newcclosure(@native function(self, ...)
 				local args = { ... };
 				if args and args[2] and args[2] == "Discharge" then
 					for i = 1, 3 do
-						hook_fireserver(self, ...);
+						FireServer(v, ...);
 					end;
 					return;
 				end;
-				return hook_fireserver(self, ...);
+				return FireServer(v, ...);
 			end));
-			if hook_fireserver then FireServer = nil; end;
+			--if hook_fireserver then FireServer = nil; end;
 		end;
 		if not network then
 			local FireServer = rawget(v, "FireServer");
