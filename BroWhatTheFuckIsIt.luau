@@ -1,7 +1,7 @@
 --!nonstrict
 --!native
 local network; network = {};
-for k, v in getgc(false) do
+for k, v in getgc(true) do
 	if type(v) == "function" and islclosure(v) then
 		if debug.info(v, "n") == "FireServer" then
 			network.FireServer = v;
@@ -29,7 +29,7 @@ for k, v in getgc(true) do
 			local hook; hook = hookfunction(rawget(v, "_discharge"), newlclosure(@native function(gun_settings)
 				network:FireServer("setToolState", "Reload");
 				network:FireServer("setToolState", "Reloaded");
-				gun_settings.Ammo = 999;
+				gun_settings.Ammo = 999999*999999;
 				return hook(gun_settings);
 			end));
 		end;
