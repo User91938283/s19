@@ -9,35 +9,28 @@ local network = {};
 for k, v in pairs(getgc(true)) do
 	if typeof(v) == "table" then
 		local FireServer = rawget(v, "FireServer");
-		if (FireServer and typeof(FireServer) == "function" and not isfunctionhooked(FireServer)) then
+		local InvokeServer = rawget(v, "InvokeServer");
+		local OnEvent = rawget(v, "OnEvent");
+		local OnFunction = rawget(v, "OnFunction");
+		if (FireServer and typeof(FireServer) == "function" and InvokeServer and typeof(InvokeServer) == "function" and OnEvent and typeof(OnEvent) == "function" and OnFunction and typeof(OnFunction) == "function") then
+			network = v;
 			local hook_fireserver; hook_fireserver = hookfunction(FireServer, newcclosure(@native function(...)
-				local self, eventName = select(1, ...), select(2, ...);
-				if self and eventName then
-					if eventName == "Discharge" then
-						for i = 1, 3 do
-							hook_fireserver(...);
-						end;
-						return;
+				local eventName = select(2, ...);
+				if eventName == "Discharge" then
+					for i = 1, 3 do
+						hook_fireserver(...);
 					end;
+					return;
 				end;
 				return hook_fireserver(...);
 			end));
 		end;
-		if not network then
-			local FireServer = rawget(v, "FireServer");
-			local InvokeServer = rawget(v, "InvokeServer");
-			local OnEvent = rawget(v, "OnEvent");
-			local OnFunction = rawget(v, "OnFunction");
-			if ((FireServer and typeof(FireServer) == "function") and (InvokeServer and typeof(InvokeServer) == "function") and (OnEvent and typeof(OnEvent) == "function") and (OnFunction and typeof(OnFunction) == "function")) then
-				network = v;
-			else
-				FireServer = nil;
-				InvokeServer = nil;
-				OnEvent = nil;
-				OnFunction = nil;
-			end;
-		end;
 	end;
+	if network then
+		break;
+	end;
+end;
+for k, v in pairs(getgc(true)) do
 	if typeof(v) == "table" and (rawget(v, "Range") and rawget(v, "Spread") and rawget(v, "Rpm") and rawget(v, "Ammo")) then
 		rawset(v, "Range", OMG);
 		rawset(v, "Spread", 0);
