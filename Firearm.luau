@@ -4,7 +4,6 @@ if not getgc or not newcclosure or not hookfunction then
 	return error("unsupported executor", 2);
 end;
 
---// Flux Network \\--
 local network; for k, v in pairs(getgc(true)) do
 	if typeof(v) == "table" and ((rawget(v, "FireServer") and typeof(rawget(v, "FireServer")) == "function") and (rawget(v, "InvokeServer") and typeof(rawget(v, "InvokeServer")) == "function") and (rawget(v, "OnEvent") and typeof(rawget(v, "OnEvent")) == "function") and (rawget(v, "OnFunction") and typeof(rawget(v, "OnFunction")) == "function")) then
 		network = {
@@ -32,7 +31,6 @@ local network; for k, v in pairs(getgc(true)) do
 	end;
 end;
 
---// A-10 Guns \\--
 local Rpm; Rpm = 999;
 for k, v in pairs(getgc(true)) do
 	if typeof(v) == "table" and (rawget(v, "Range") and rawget(v, "Spread") and rawget(v, "Rpm") and rawget(v, "Ammo")) then
@@ -46,7 +44,6 @@ for k, v in pairs(getgc(true)) do
 	end;
 end;
 
---// Inf Ammo \\--
 for k, v in getgc(true) do
 	if type(v) == "table" then
 		if rawget(v, "_discharge") then	
@@ -60,15 +57,14 @@ for k, v in getgc(true) do
 	end;
 end;
 
---// Insta Kill \\--
-local FirearmClass; for k, v in pairs(getgc(true)) do
+--[[local FirearmClass; for k, v in pairs(getgc(true)) do
 	if typeof(v) == "table" and (rawget(v, "new") and rawget(v, "Discharge") and rawget(v, "ToggleFlashlight")) then
 		FirearmClass = v;
 		break;
 	end;
 end;
 
---[[local hook_Discharge; hook_Discharge = hookfunction(FirearmClass.Discharge, newcclosure(@native function(...)
+local hook_Discharge; hook_Discharge = hookfunction(FirearmClass.Discharge, newcclosure(@native function(...)
 	for i = 1, 5 do
 		hook_Discharge(...);
 		task.wait(60/Rpm);
