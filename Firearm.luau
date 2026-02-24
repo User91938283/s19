@@ -5,15 +5,6 @@ local Num = 999998000001;
 local network = {};
 for k, v in pairs(getgc(true)) do
 	if typeof(v) == "table" then
-		if (rawget(v, "FireServer") and typeof(rawget(v, "FireServer")) == "function") and (rawget(v, "InvokeServer") and typeof(rawget(v, "InvokeServer")) == "function") then
-			network.FireServer = rawget(v, "FireServer");
-			network.InvokeServer = rawget(v, "InvokeServer");
-			break;
-		end;
-	end;
-end;
-for k, v in pairs(getgc(true)) do
-	if typeof(v) == "table" then
 		if rawget(v, "FireServer") and typeof(rawget(v, "FireServer")) == "function" then
 			local hook; hook = hookfunction(rawget(v, "FireServer"), newcclosure(@native function(...)
 				local eventName = select(3, ...);
@@ -25,6 +16,12 @@ for k, v in pairs(getgc(true)) do
 				end;
 				return hook(...);
 			end));
+			if #network <= 0 then
+				if (rawget(v, "FireServer") and typeof(rawget(v, "FireServer")) == "function") and (rawget(v, "InvokeServer") and typeof(rawget(v, "InvokeServer")) == "function") then
+					network.FireServer = rawget(v, "FireServer");
+					network.InvokeServer = rawget(v, "InvokeServer");
+				end;
+			end;
 		end;
 	end;
 end;
