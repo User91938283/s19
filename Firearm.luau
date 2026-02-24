@@ -1,6 +1,6 @@
 --!nonstrict
 --!native
-local Rpm = 999998000001;
+local Rpm = 1488;
 local Num = 999998000001;
 local network = {};
 for k, v in pairs(getgc(true)) do
