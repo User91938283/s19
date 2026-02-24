@@ -2,6 +2,7 @@
 --!native
 game:GetService("Lighting"):WaitForChild("Blink_Overlay_Blur").Size = 0;
 game:GetService("Lighting"):WaitForChild("Blink_Overlay_CC").Brightness = 0;
+
 for k, v in pairs(getgc(true)) do
 	if (typeof(v) == "table" and ((rawget(v, "Blink") and typeof(rawget(v, "Blink")) == "number") and (rawget(v, "Sprint") and typeof(rawget(v, "Sprint")) == "number"))) then
 		rawset(v, "Blink", 21);
