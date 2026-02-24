@@ -16,3 +16,11 @@ for k, v in pairs(getgc(true)) do
 		hookfunction(rawget(v, "UpdateBlink"), newcclosure(@native function(...) end));
 	end;
 end;
+
+local hook; hook = hookmetamethod(game, "__newindex", newcclosure(@native function(table, index, value)
+	if checkcaller() then return hook(table, index, value); end;
+	if ((index == "Sprint" or index == "Blink") and (typeof(value) == "number")) then
+		value = 21;
+	end;
+	return hook(table, index, value);
+end));
