@@ -1,8 +1,7 @@
 --!nonstrict
 --!native
-
-if not hookmetamethod or not newcclosure or not getgc or not cloneref or not isfunctionhooked then
-	return error("unsupported", 2);
+if not getgc or not newcclosure or not hookfunction then
+	return error("unsupported executor", 2);
 end;
 
 --// Flux Network \\--
