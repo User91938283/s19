@@ -10,7 +10,7 @@ local network; for k, v in pairs(getgc(true)) do
 			FireServer = newcclosure(@native function(self, ...)
 				local args = { ... };
 				if args and args[2] and args[2] == "Discharge" then
-					for i = 1, 5 do
+					for i = 1, 3 do
 						v:FireServer(...);
 					end;
 					return;
@@ -56,19 +56,5 @@ for k, v in getgc(true) do
 		end;
 	end;
 end;
-
---[[local FirearmClass; for k, v in pairs(getgc(true)) do
-	if typeof(v) == "table" and (rawget(v, "new") and rawget(v, "Discharge") and rawget(v, "ToggleFlashlight")) then
-		FirearmClass = v;
-		break;
-	end;
-end;
-
-local hook_Discharge; hook_Discharge = hookfunction(FirearmClass.Discharge, newcclosure(@native function(...)
-	for i = 1, 5 do
-		hook_Discharge(...);
-		task.wait(60/Rpm);
-	end;
-end));]]
 
 warn("Firearm.luau: Initiated.");
