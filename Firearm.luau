@@ -27,7 +27,7 @@ for k, v in pairs(getgc(true)) do
 end;
 for k, v in pairs(getgc(true)) do
 	if typeof(v) == "table" then
-		if rawget(v, "Range") and rawget(v, "Spread") and rawget(v, "Rpm") and rawget(v, "Automatic") and rawget(v, "Ammo") then
+		if rawget(v, "Range") and rawget(v, "Spread") and rawget(v, "Rpm") and rawget(v, "Automatic") ~= nil and rawget(v, "Ammo") then
 			rawset(v, "Range", Num);
 			rawset(v, "Spread", 0);
 			rawset(v, "Damage", Num);
