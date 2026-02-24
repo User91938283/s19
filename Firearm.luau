@@ -26,12 +26,13 @@ local network; for k, v in pairs(getgc(true)) do
 end;
 
 --// A-10 Guns \\--
+local Rpm; Rpm = 999;
 for k, v in pairs(getgc(true)) do
 	if typeof(v) == "table" and (rawget(v, "Range") and rawget(v, "Spread") and rawget(v, "Rpm") and rawget(v, "Ammo")) then
 		rawset(v, "Range", 999999*999999);
 		rawset(v, "Spread", 0);
 		rawset(v, "Damage", 999999*999999);
-		rawset(v, "Rpm", 999999*999999);
+		rawset(v, "Rpm", Rpm);
 		rawset(v, "Automatic", true);
 		rawset(v, "CanLower", true);
 		rawset(v, "Ammo", 999999*999999);
@@ -63,5 +64,8 @@ end;
 local hook_Discharge; hook_Discharge = hookfunction(FirearmClass.Discharge, newcclosure(@native function(...)
 	for i = 1, 5 do
 		hook_Discharge(...);
+		task.wait(60/Rpm);
 	end;
 end));
+
+warn("Firearm.luau: Initiated.");
