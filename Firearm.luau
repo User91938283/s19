@@ -1,6 +1,7 @@
 --!nonstrict
 --!native
-local Rpm, Num; Rpm, Num = 999, Rpm*2;
+local Rpm = 999;
+local Num = Rpm*2;
 local network = {};
 for k, v in pairs(getgc(true)) do
 	if typeof(v) == "table" then
