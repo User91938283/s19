@@ -3,14 +3,13 @@
 if not getgc or not newcclosure or not hookfunction then
 	return error("unsupported executor", 2);
 end;
-
 local Rpm = 999;
 local OMG = 999999*999999;
 local network = {};
 for k, v in pairs(getgc(true)) do
 	if typeof(v) == "table" then
 		local FireServer = rawget(v, "FireServer");
-		if (FireServer and typeof(FireServer) == "function" and not iscclosure(FireServer) and not isfunctionhooked(FireServer)) then
+		if (FireServer and typeof(FireServer) == "function" and not isfunctionhooked(FireServer)) then
 			local hook_fireserver; hook_fireserver = hookfunction(FireServer, newcclosure(@native function(...)
 				local self, eventName = select(1, ...), select(2, ...);
 				if self and eventName then
@@ -53,6 +52,7 @@ for k, v in pairs(getgc(true)) do
 		if _discharge and not isfunctionhooked(_discharge) then	
 			local hook__discharge; hook__discharge = hookfunction(_discharge, newcclosure(@native function(self, ...)
 				if not network then return hook__discharge(self, ...); end;
+				if not network.FireServer then print("network.FireServer is not valid member of network."); return hook__discharge(self, ...); end;
 				network:FireServer("setToolState", "Reload");
 				network:FireServer("setToolState", "Reloaded");
 				rawset(self, "Ammo", OMG);
@@ -63,5 +63,4 @@ for k, v in pairs(getgc(true)) do
 		end;
 	end;
 end;
-
 warn("Firearm.luau: Initiated.");
