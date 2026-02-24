@@ -14,7 +14,7 @@ for k, v in pairs(getgc(true)) do
 		local OnFunction = rawget(v, "OnFunction");
 		if (FireServer and typeof(FireServer) == "function" and InvokeServer and typeof(InvokeServer) == "function" and OnEvent and typeof(OnEvent) == "function" and OnFunction and typeof(OnFunction) == "function") then
 			network = v;
-			local hook_fireserver; hook_fireserver = hookfunction(FireServer, newcclosure(@native function(...)
+			local hook_fireserver; hook_fireserver = hookfunction(FireServer, newlclosure(@native function(...)
 				local eventName = select(2, ...);
 				if eventName == "Discharge" then
 					for i = 1, 3 do
