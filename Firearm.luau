@@ -10,18 +10,19 @@ local network = {};
 for k, v in pairs(getgc(true)) do
 	if typeof(v) == "table" then
 		local FireServer = rawget(v, "FireServer");
-		if (FireServer and typeof(FireServer) == "function" and not isfunctionhooked(FireServer)) then
-			hookfunction(FireServer, newcclosure(@native function(self, ...)
-				local args = { ... };
-				if args and args[2] and args[2] == "Discharge" then
-					for i = 1, 3 do
-						FireServer(self, ...);
+		if (FireServer and typeof(FireServer) == "function" and not iscclosure(FireServer) and not isfunctionhooked(FireServer)) then
+			local hook_fireserver; hook_fireserver = hookfunction(FireServer, newcclosure(@native function(...)
+				local self, eventName = select(1, ...), select(2, ...);
+				if self and eventName then
+					if eventName == "Discharge" then
+						for i = 1, 3 do
+							hook_fireserver(...);
+						end;
+						return;
 					end;
-					return;
 				end;
-				return FireServer(self, ...);
+				return hook_fireserver(...);
 			end));
-			--if hook_fireserver then FireServer = nil; end;
 		end;
 		if not network then
 			local FireServer = rawget(v, "FireServer");
