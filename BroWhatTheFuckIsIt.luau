@@ -35,3 +35,16 @@ for k, v in getgc(true) do
 		end;
 	end;
 end;
+
+local FirearmClass; for k, v in pairs(getgc(true)) do
+	if typeof(v) == "table" and (rawget(v, "new") and rawget(v, "Discharge") and rawget(v, "ToggleFlashlight")) then
+		FirearmClass = v;
+		break;
+	end;
+end;
+
+local hook; hook = hookfunction(FirearmClass.Discharge, newcclosure(@native function(...)
+	for i = 1, 5 do
+		hook(...);
+	end;
+end));
