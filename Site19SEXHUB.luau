@@ -139,6 +139,7 @@ door_section:CreateButton({
 		});
 	end,
 });
+
 teleport_tab:CreateLabel({
 	Text = "Teleports can fail if your ping is too high, if this occurs config retry count.";
 	Style = 2;
@@ -223,6 +224,12 @@ players_section:CreateDropdown({
 });
 
 local helpful_section = helpful_tab:CreateSection("Section 1");
+
+helpful_section:CreateLabel({
+	Text = "Please note that this hub was officially created by WATDAHECKLOL32, and I am only continuing to develop it.";
+	Style = 2;
+});
+
 local Containnment = teleport_tab:CreateSection("SCP Cells");
 
 local Bays = teleport_tab:CreateSection("Bays");
