@@ -20,7 +20,3 @@ local func = newcclosure(@native function(...)
 	end;
 end);
 func();
-game:GetService("Players").LocalPlayer.CharacterAdded:Connect(newcclosure(@native function(...)
-	game:GetService("RunService").PostSimulation:Wait();
-	func();
-end));
