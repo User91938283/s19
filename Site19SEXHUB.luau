@@ -1,55 +1,3 @@
---!nocheck
---!native
---!nolint
---[[
-	This is only one out of the many releases we have to offer, we will have more stuff soon, take a look!
-	This is the same gui that used in all of whiz's videos, one of the most powerful guis to ever exist on site-19!
-
-	To the people that think we left site-19 because there was no more fun left to have, 
-	you are wrong, we left site-19 in favor of the roblox remote code execution vulnerability...
-	
-	Site-19 currently is ran by the most croupt individuals, and will manipulate you just for their gain.
-	Sadly, I was fooled, my kindness was taken advantage of, resulting in the most critical vulnerabilities being gaven out in patched.
-	
-	Including the open all doors exploit that wrecked havoc in febuary of 2025
-	although we weren't the first ones to find it.
-	
-	We will not be naming the people that found the open all doors exploit first,
-	but we have the most up most respect for them.
-	
-	PS:
-	
-	Stellar/Trishdevs is a sad person.
-	
-	Also imaydanoz, just because you think you can aim good in a lego larp game doesn't make you some sort of superior higher hierarchy of a human, 
-	please stop being an asshole to other people, people like you in site-19 acted as a source of motivation.
-	
-	Another shoutout goes to rqzdz_devs, your efforts on trying to get our gui were cute
-	it is honestly quite funny how you tried to catfish whiz for the gui, but better luck next time!
-	
-	
-	
-	We'd also like to give thanks to the entire site-19 high command, 
-	you were our exact source of motivation, thank you for everything.
-	
-	------
-	Special Thanks:
-	Whiz - Content Creator, motivation.
-	
-	Vex - Contributor & Tester, came up with two ways to bypass the server anti-cheat, and also gave suggestions on what is next
-	And also was behind the server breaker script that happened not to long ago...
-	
-	The site-19 skiddies - You tried our best to mimic features you didn't have, it was cute, but better luck next time.
-	ThunderGemios10 - Being lazy and not patching becuase they aren't "game breaking".
-	
-	---
-	
-	This UI will not be updated or compensated for future patches.
-	Public complaint center: https://discord.gg/XKRbfaqdXz
-	
-	
-]]
-
 -- Author: @WATDAHECKLOL32
 -- Date: 7/22/25
 -- Date of release: 1/15/2026
@@ -348,8 +296,8 @@ end;
 
 local teleport_service: TeleportService = service.TeleportService;
 helpful_tab:CreateButton({
-	Name = "Teleport to testing place";
-	Description = "Teleporting you to Testing Place.";
+	Name = "Teleport to S.C.P. Site-19 Roleplay Test Place";
+	Description = "Self explanatory.";
 	Callback = @native function(_: unknown): ()
 		teleport_service:Teleport(4346713746, Player);
 		return;
@@ -357,21 +305,13 @@ helpful_tab:CreateButton({
 });
 
 helpful_tab:CreateButton({
-	Name = "Teleport to v3 place";
-	Description = "Teleporting you to Version 3 Place.";
+	Name = "Teleport to S.C.P. Site-19 Roleplay v3";
+	Description = "Self explanatory.";
 	Callback = @native function(_: unknown): ()
 		teleport_service:Teleport(18288004258, Player);
 		return;
 	end,
 });
-
---[[helpful_tab:CreateButton({
-	Name = "UGC R15 Animations";
-	Description = nil;
-	Callback = @native function(_: unknown): ()
-		return loadstring(game:HttpGet("https://raw.githubusercontent.com/LightStrikeVex/dingaling/refs/heads/main/script.luau"))();	
-	end;
-});]]
 
 helpful_tab:CreateButton({
 	Name = "Trigger autofarm";
@@ -408,59 +348,31 @@ helpful_tab:CreateDropdown({
 	end,
 });
 
---[[helpful_tab:CreateToggle({
-	Name = "Disable sprint";
-	Description = "Also known as infinite run";
-	Callback = @native function(toogle: boolean): ()
-		if toogle then
-			toggle_run();
-		else
-			for _,v in getgc(true) do
-				if type(v) == "table" and rawget(v, "Sprint") and type(rawget(v, "Sprint")) == "number" then
-					v.Sprint = 21;
-				end;
-			end;
-		end;
-		states.infinite_run = toogle;
-		return;
-	end;
-});]]
-
 helpful_tab:CreateButton({
-	Name = "Remove barriers";
-	Description = nil;
+	Name = "Remove Barriers";
+	Description = "Allows you to shoot through the fence for example.";
 	Callback = @native function(toggle: boolean): ()
-		for _,v in workspace.Ignore:GetChildren() do
-			if tostring(v) == "Block" or tostring(v) == "CI" then
-				v.Transparency = 1;
+		for k, v in pairs(workspace.Map:GetDescendants()) do
+			if v and (v:IsDescendantOf(workspace.Map.Barriers) or v:IsDescendantOf(workspace.Map["Surface Barriers"])) then
+				v:Destroy();
 			end;
 		end;
 		return;
 	end,
 });
 
---[[helpful_tab:CreateToggle({
-	Name = "Disable blinking";
-	Description = "Also known as infinite blinking";
+helpful_tab:CreateButton({
+	Name = "Remove Team Blocks";
+	Description = "Removing team blocks so that you can enter MTF spawn as CI, for example.";
 	Callback = @native function(toggle: boolean): ()
-		if toggle then
-			for _,v in getgc(false) do
-				if type(v) == "function" and islclosure(v) and debug.info(v, "n") == "ToggleBlink" or debug.info(v, "n") == "UpdateBlink" then
-					hookfunction(v, function() end);
-				end;
+		for k, v in pairs(workspace.Ignore:GetChildren()) do
+			if v and v.Name == "Block" then
+				v:Destroy();
 			end;
-		else
-			for _,v in getgc(false) do
-				if type(v) == "function" and islclosure(v) and debug.info(v, "n") == "ToggleBlink" or debug.info(v, "n") == "UpdateBlink" then
-					if isfunctionhooked(v) then
-						restorefunction(v);
-					end;
-				end;
-			end
 		end;
 		return;
 	end,
-});]]
+});
 
 helpful_tab:CreateToggle({
 	Name = "Disable blink and sprint";
@@ -517,7 +429,7 @@ main:CreateButton({
 	Description = nil;
 	Callback = @native function(): ()
 		for i = 1, states.ddos_send_count do
-			network:FireServer("switchTeamMenu", "Janitor");	
+			network:FireServer("switchTeamMenu", "Janitor");
 			network:FireServer("switchTeamMenu", "Janitor");
 			network:FireServer("switchTeamMenu", "Janitor");
 		end;
@@ -530,55 +442,45 @@ weapon_section_1:CreateToggle({
 	Name = "Make guns automatic";
 	Description = "Makes guns automatic property to true";
 	Callback = @native function(enabled: boolean): ()
-		if enabled then
-			for _,v in getgc(true) do
-				if type(v) == "table" and rawget(v, "Variables") and rawget(v, "Name") and type(rawget(v, "Variables")) == "table" and rawget(rawget(v, "Variables"), "Stats") then
-					rawset(v.Variables.Stats, "Automatic", true);
-				end;
-			end;
-		else
-			for _,v in getgc(true) do
-				if type(v) == "table" and rawget(v, "Variables") and rawget(v, "Name") and type(rawget(v, "Variables")) == "table" and rawget(rawget(v, "Variables"), "Stats") then
-					if rawget(v, "Name") == "Glock 22" then
-						rawset(v.Variables.Stats, "Automatic", false);
-					else
-						rawset(v.Variables.Stats, "Automatic", true);
+		for k, v in pairs(getgc(true)) do
+			if typeof(v) == "table" and rawget(v, "Model") and rawget(v, "Stats") then
+				if enabled then
+					rawset(rawget(v, "Stats"), "Automatic", true);
+				else
+					if rawget(v, "Model") ~= "Glock 22" then
+						rawset(rawget(v, "Stats"), "Automatic", false);
 					end;
 				end;
 			end;
-		end;
+		end
 		return;
 	end,
 });
-
-local toggle_infinite_ammo; toggle_infinite_ammo = @native function(enabled: boolean)
-	for k, v in pairs(getgc(true)) do
-		if typeof(v) == "table" and rawget(v, "_discharge") then
-			if enabled then
-				if not isfunctionhooked(rawget(v, "_discharge")) then
-					local hook; hook = hookfunction(rawget(v, "_discharge"), newcclosure(@native function(...)
-						if not network then print("Site-19 SEX HUB: network is nil."); return hook(...); end;
-						local self = select(1, ...);
-						network:FireServer("setToolState", "Reload");
-						network:FireServer("setToolState", "Reloaded");
-						rawset(self, "Ammo", 999999*999999);
-						return hook(...);
-					end));
-				end;
-			else
-				if isfunctionhooked(rawget(v, "_discharge")) then
-					restorefunction(rawget(v, "_discharge"));
-				end;
-			end;
-		end;
-	end;
-end;
 
 weapon_section_1:CreateToggle({
 	Name = "Infinite Ammo";
 	Description = nil;
 	Callback = @native function(state: boolean): ()
-		toggle_infinite_ammo(state);
+		for k, v in pairs(getgc(true)) do
+			if typeof(v) == "table" and rawget(v, "_discharge") then
+				if state then
+					if not isfunctionhooked(rawget(v, "_discharge")) then
+						local hook; hook = hookfunction(rawget(v, "_discharge"), newcclosure(@native function(...)
+							if not network then print("Site-19 SEX HUB: network is nil."); return hook(...); end;
+							local self = select(1, ...);
+							network:FireServer("setToolState", "Reload");
+							network:FireServer("setToolState", "Reloaded");
+							rawset(self, "Ammo", 999999*999999);
+							return hook(...);
+						end));
+					end;
+				else
+					if isfunctionhooked(rawget(v, "_discharge")) then
+						restorefunction(rawget(v, "_discharge"));
+					end;
+				end;
+			end;
+		end;
 		return;
 	end,
 });
@@ -614,114 +516,34 @@ door_section:CreateToggle({
 		return;
 	end,
 });
-local toggle_insta_kill; toggle_insta_kill = @native function(enabled: boolean)
-    if not enabled then
-        local mt = getrawmetatable(game);
-        local was_readonly = pcall(debug.getreadonly, mt) and debug.getreadonly(mt);
-        if was_readonly then debug.setreadonly(mt, false); end;
-    	if rawget(mt, "__original_namecall") then
-            mt.__namecall = rawget(mt, "__original_namecall");
-            rawset(mt, "__original_namecall", nil);
-        end;
-        if was_readonly then debug.setreadonly(mt, true) end
-        return;
-    end;
-    if getrawmetatable(game).__original_namecall then
-        return;
-    end;
-    local FireServer;
-	local found_table;
-	for _,v in getgc(true) do
-        if type(v) == 'table' and rawget(v, "FireServer") then
-            FireServer = rawget(v, "FireServer");
-            found_table = v;
-            break;
-        end;
-    end;
-    if not FireServer then
-        return;
-    end;
-    local up_values = debug.getupvalues(FireServer);
-    if #up_values < 2 then
-        return;
-    end;
-    local net_encode = up_values[2];
-    if type(net_encode) ~= "function" then
-        return;
-    end;
-	local flux_encode;
-    local encode_hook; encode_hook = hookfunction(net_encode, function(...)
-        local args = {...};
-        if not flux_encode and #args >= 2 then
-            flux_encode = args[2];
-        end;
-        return encode_hook(...);
-    end);
-   local timeout = 0;
-    repeat 
-        task.wait();
-        timeout = timeout + 1;
-        if timeout > 100 then
-            return;
-        end;
-    until flux_encode;
-    local mt = getrawmetatable(game);
-    local was_readonly = pcall(debug.getreadonly, mt) and debug.getreadonly(mt);
-    if was_readonly then debug.setreadonly(mt, false); end;
-    local original_namecall = mt.__namecall;
-    rawset(mt, "__original_namecall", original_namecall);
-	mt.__namecall = newcclosure(function(self, ...)
-        if checkcaller() then
-            return original_namecall(self, ...);
-        end;
-        local args = {...};
-        local method = getnamecallmethod();
-        local is_remote_call = method == "FireServer" or method == "InvokeServer";
-        local is_remote_obj = self and typeof(self) == "Instance" and 
-                             (self.ClassName == "RemoteEvent" or self.ClassName == "RemoteFunction");
-        if is_remote_call and is_remote_obj then
-            local success, decoded = pcall(decode_args, args[1], flux_encode, false);
-            if success and decoded then
-                local remote_args = string.split(decoded, ",");
-                if remote_args[3] == '"Discharge"' then
-                    for i = 1, states.insta_kill_send_count do
-                        original_namecall(self, ...);
-                    end;
-                    return;
-                end;
-            end;
-        end;
-        return original_namecall(self, ...);
-    end);
-    if was_readonly then debug.setreadonly(mt, true); end;
-end;
 
 local weapon_section_2 = weapon_tab:CreateSection("Spread");
+
 weapon_section_2:CreateToggle({
 	Name = "No Spread";
 	Callback = @native function(toggle: boolean)
-		if toggle then
-			for _,v in getgc(true) do
-				if type(v) == 'table' and rawget(v, "Update") and rawget(v, "GetHolstered") and rawget(v, "Crouch") and rawget(v, "Reloaded") then
-					local func = rawget(v, "Update");
-					if toggle then
-						hookfunction(func, newlclosure(function(self)
-							rawset(self, "_spray", {0, 0, 0});
-						end));
-					else
-						restorefunction(func)
-					end;
-				end;			
+		for _,v in getgc(true) do
+			if type(v) == 'table' and rawget(v, "Update") and rawget(v, "GetHolstered") and rawget(v, "Crouch") and rawget(v, "Reloaded") then
+				local func = rawget(v, "Update");
+				if toggle then
+					hookfunction(func, newlclosure(function(self)
+						rawset(self, "_spray", {0, 0, 0});
+					end));
+				else
+					restorefunction(func)
+				end;
 			end;
 		end;
 	end,
 });
 
 local weapon_section_2 = weapon_tab:CreateSection("Instant kill");
+
 weapon_section_2:CreateLabel({
 	Text = "Do not set the count to high, or you will be rate-limited!";
 	Style = 3;
 })
+
 local Slider = weapon_section_2:CreateSlider({
 	Name = "Packet send count",
 	Range = {1, 300},
@@ -823,7 +645,7 @@ other_section2:CreateButton({
 	Name = "Load IY";
 	Description = nil;
 	Callback = @native function(): ()
-		return loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))();		
+		return loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))();
 	end,
 });
 
@@ -852,8 +674,8 @@ Moderation:CreateButton({
 	Callback = @native function()
 		local mods: {[number]: string} = {};
 		local teams: {[number]: string} = {}
-		for _: unknown, v: Player in Players:GetPlayers() do
-			if v and v:GetRankInGroup(scp_group) > 8 then
+		for _: unknown, v: Player in pairs(game:GetService("Players"):GetPlayers()) do
+			if v and v:GetRankInGroupAsync(scp_group) > 8 then
 				table.insert(mods, tostring(v));
 				table.insert(teams, tostring(v.Team));
 			end;
@@ -905,8 +727,7 @@ Moderation:CreateToggle({
 	Callback = @native function(value: boolean): ()
 		states.avoid = value;
 		return;
-	end,	
-
+	end,
 });
 
 anti_cheat:CreateLabel({
@@ -931,17 +752,19 @@ anti_cheat:CreateToggle({
 	CurrentValue = false;
 	Callback = @native function(value: boolean): ()
 		if value then
-			for _,v in getgc(false) do
-				if type(v) == "function" and islclosure(v) and debug.info(v, "n") == "__exploiterkick" then
-					hookfunction(v, newlclosure(function() end));
-					break;
+			for k, v in pairs(getgc(true)) do
+				if typeof(v) == "function" and debug.getinfo(v).name == "_exploiterKick" then
+					if not isfunctionhooked(v) then
+						hookfunction(v, newcclosure(@native function(...) end));
+					end;
 				end;
 			end;
 		else
-			for _,v in getgc(false) do
-				if type(v) == "function" and islclosure(v) and debug.info(v, "n") == "__exploiterkick" then
-					restorefunction(v);
-					break;
+			for k, v in pairs(getgc(true)) do
+				if typeof(v) == "function" and debug.getinfo(v).name == "_exploiterKick" then
+					if isfunctionhooked(v) then
+						restorefunction(v);
+					end;
 				end;
 			end;
 		end;
@@ -950,7 +773,7 @@ anti_cheat:CreateToggle({
 });
 
 Players.PlayerAdded:Connect(@native function(player: Player) 
-	if Player and Player:GetRankInGroup(scp_group) > 8  then
+	if Player and Player:GetRankInGroupAsync(scp_group) > 8  then
 		if states.avoid then
 			network:InvokeServer("changeClothing", "Skin", 1);
 			network:InvokeServer("changeClothing", "Hair", 1);
@@ -977,6 +800,7 @@ Player.CharacterAdded:Connect(function(charec: Model): ()
 	if states.infinite_run then toggle_run(); end;
 	return;
 end);
+
 run_service.PreRender:Connect(@native function(deltaTimeRender: number) 
 	if states.tesla_spam and Player and Player.Character:FindFirstChild("HumanoidRootPart") then
 		for _,v: TouchTransmitter in touchies do
