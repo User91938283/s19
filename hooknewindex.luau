@@ -9,8 +9,8 @@ end));
 task.wait(1);
 local enabled; enabled = false;
 local hook; hook = hookmetamethod(game, "__newindex", newcclosure(@native function(table, index, value)
-	if not checkcaller() and enabled then
-		if index == "WalkSpeed" then
+	if not checkcaller() then
+		if index == "WalkSpeed" and enabled then
 			return hook(table, index, 30);
 		end;
 	end;
