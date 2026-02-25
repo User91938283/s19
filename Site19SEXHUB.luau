@@ -403,7 +403,7 @@ helpful_tab:CreateDropdown({
 	end,
 });
 
-helpful_tab:CreateToggle({
+--[[helpful_tab:CreateToggle({
 	Name = "Disable sprint";
 	Description = "Also known as infinite run";
 	Callback = @native function(toogle: boolean): ()
@@ -419,7 +419,8 @@ helpful_tab:CreateToggle({
 		states.infinite_run = toogle;
 		return;
 	end;
-});
+});]]
+
 helpful_tab:CreateButton({
 	Name = "Remove barriers";
 	Description = nil;
@@ -433,7 +434,7 @@ helpful_tab:CreateButton({
 	end,
 });
 
-helpful_tab:CreateToggle({
+--[[helpful_tab:CreateToggle({
 	Name = "Disable blinking";
 	Description = "Also known as infinite blinking";
 	Callback = @native function(toggle: boolean): ()
@@ -454,7 +455,47 @@ helpful_tab:CreateToggle({
 		end;
 		return;
 	end,
+});]]
+
+helpful_tab:CreateToggle({
+	Name = "Disable blink and sprint";
+	Description = "Disables blink and sprint";
+	Callback = @native function(toggle: boolean): ()
+		game:GetService("Lighting"):WaitForChild("Blink_Overlay_Blur").Size = 0;
+		game:GetService("Lighting"):WaitForChild("Blink_Overlay_CC").Brightness = 0;
+		for k, v in pairs(getgc(true)) do
+			if typeof(v) == "table" and rawget(v, "Blink") and rawget(v, "Sprint") then
+				if typeof(rawget(v, "Blink")) == "number" then
+					if toggle then
+						rawset(v, "Blink", math.huge);
+					else
+						rawset(v, "Blink", 21);
+					end;
+				end;
+				if typeof(rawget(v, "Sprint")) == "number" then
+					if toggle then
+						rawset(v, "Sprint", math.huge);
+					else
+						rawset(v, "Sprint", 21);
+					end;
+				end;
+			end;
+			if typeof(v) == "table" and (rawget(v, "Blink") and typeof(rawget(v, "Blink")) == "function") and (rawget(v, "Sprint") and typeof(rawget(v, "Sprint"))) then
+				if toggle then
+					if not isfunctionhooked(rawget(v, "Blink")) then
+						hookfunction(rawget(v, "Blink"), newcclosure(@native function(...) end));
+					end;
+				else
+					if isfunctionhooked(rawget(v, "Blink")) then
+						restorefunction(rawget(v, "Blink"));
+					end;
+				end;
+			end;
+		end;
+		return;
+	end,
 });
+
 local Slider = ddos_section:CreateSlider({
 	Name = "Packet send count",
 	Range = {1, 50},
