@@ -77,24 +77,21 @@ local Player = Players.LocalPlayer :: Player;
 local CollectionService: CollectionService = service.CollectionService;
 
 local network = {};
-for _,v in getgc(false) do
-	if type(v) == "function" and islclosure(v) then
-		if debug.info(v, "n") == "FireServer" then
-			network.FireServer = v;
-		elseif debug.info(v, "n") == "InvokeServer" then
-			network.InvokeServer = v;
-		end;
-	end;
+for k, v in pairs(getgc(true)) do
+	if typeof(v) == "table" and rawget(v, "FireServer") and rawget(v, "InvokeServer") and rawget(v, "OnEvent") then
+		network = v;
+		break;
+	end
 end;
 
 local Luna = loadstring(game:HttpGet("https://raw.nebulasoftworks.xyz/luna", true))();
 local Window = Luna:CreateWindow({
-	Name = "Site 19 SEX HUB", 
+	Name = "SITE-19 SEX HUB", 
 	Subtitle = "Power beyond your comprehension.", 
 	LogoID = 82795327169782,
 	LoadingEnabled = true, 
-	LoadingTitle = "Site-19 SEX HUB V2.0", 
-	LoadingSubtitle = "by Director WATDAHECKLOL32, Vex, whiz",
+	LoadingTitle = "SITE-19 SEX HUB V2.0", 
+	LoadingSubtitle = "by WATDAHECKLOL32, WATDAHECKLOL45, LightStrikeVex.",
 	ConfigSettings = {
 		RootFolder = nil, 
 		ConfigFolder = "S19 Hub" 
@@ -132,6 +129,7 @@ local helpful_tab =  Window:CreateTab({
 	ImageSource =  "Material";
 	ShowTitle = true;	
 });
+
 local weapon_tab = Window:CreateTab({
 	Name = "Weapons",
 	Icon = "pan_tool",
@@ -145,6 +143,7 @@ local moderation_tab = Window:CreateTab({
 	ImageSource = "Material";
 	ShowTitle = true
 });
+
 local ddos_tab = Window:CreateTab({
 	Name = "DDOS";
 	Icon = "dns";
@@ -158,12 +157,14 @@ local teleport_tab = Window:CreateTab({
 	ImageSource = "Material";
 	ShowTitle = true;
 });
+
 local door_tab = Window:CreateTab({
 	Name = "Doors";
 	Icon = "sensor_door";
 	ImageSource = "Material";
 	ShowTitle = true;	
 });
+
 local door_section = door_tab:CreateSection("Main");
 
 door_section:CreateButton({
@@ -308,6 +309,7 @@ local other_tab = Window:CreateTab({
 	ImageSource = "Material";
 	ShowTitle = true;
 });
+
 local Moderation = moderation_tab:CreateSection("Moderation");
 local anti_cheat = moderation_tab:CreateSection("Anti cheat");
 
@@ -334,6 +336,7 @@ ddos_section:CreateLabel({
 	Text = "Do not set the count too high, or you will be rate-limit!";
 	Style = 3;
 });
+
 local toggle_run = @native function(): ()
 	for _,v in getgc(true) do
 		if type(v) == "table" and rawget(v, "Sprint") and type(rawget(v, "Sprint")) == "number" then
@@ -346,7 +349,7 @@ end;
 local teleport_service: TeleportService = service.TeleportService;
 helpful_tab:CreateButton({
 	Name = "Teleport to testing place";
-	Description = nil;
+	Description = "Teleporting you to Testing Place.";
 	Callback = @native function(_: unknown): ()
 		teleport_service:Teleport(4346713746, Player);
 		return;
@@ -354,21 +357,22 @@ helpful_tab:CreateButton({
 });
 
 helpful_tab:CreateButton({
-	Name = "Teleport to v3";
-	Description = nil;
+	Name = "Teleport to v3 place";
+	Description = "Teleporting you to Version 3 Place.";
 	Callback = @native function(_: unknown): ()
 		teleport_service:Teleport(18288004258, Player);
 		return;
 	end,
 });
 
-helpful_tab:CreateButton({
+--[[helpful_tab:CreateButton({
 	Name = "UGC R15 Animations";
 	Description = nil;
 	Callback = @native function(_: unknown): ()
 		return loadstring(game:HttpGet("https://raw.githubusercontent.com/LightStrikeVex/dingaling/refs/heads/main/script.luau"))();	
 	end;
-});
+});]]
+
 helpful_tab:CreateButton({
 	Name = "Trigger autofarm";
 	Callback = @native function(_: unknown): ()
@@ -387,6 +391,7 @@ helpful_tab:CreateButton({
 		return;
 	end,
 });
+
 helpful_tab:CreateDropdown({
 	Name = "Get Tool";
 	Description = "Buys from CD dealer";
@@ -546,20 +551,13 @@ weapon_section_1:CreateToggle({
 	end,
 });
 
-local network;
 local toggle_infinite_ammo; toggle_infinite_ammo = @native function(enabled: boolean)
 	for k, v in pairs(getgc(true)) do
-		if not network then
-			if rawget(v, "OnEvent") and typeof(rawget(v, "OnEvent")) == "function" then
-				network = v;
-				continue;
-			end;
-		end;
 		if typeof(v) == "table" and rawget(v, "_discharge") then
 			if enabled then
 				if not isfunctionhooked(rawget(v, "_discharge")) then
 					local hook; hook = hookfunction(rawget(v, "_discharge"), newcclosure(@native function(...)
-						if not network then return hook(...); end;
+						if not network then print("Site-19 SEX HUB: network is nil."); return hook(...); end;
 						local self = select(1, ...);
 						network:FireServer("setToolState", "Reload");
 						network:FireServer("setToolState", "Reloaded");
