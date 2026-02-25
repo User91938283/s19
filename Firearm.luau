@@ -55,3 +55,10 @@ for k, v in pairs(getgc(true)) do
 		end;
 	end;
 end;
+local hook; hook = hookfunction(task.wait, newcclosure(@native function(...)
+	local info = debug.getinfo(2, "n");
+	if info and info.name == "_activateDischarge" then
+		return hook(nil);
+	end;
+	return hook(...);
+end));
