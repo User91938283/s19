@@ -354,6 +354,15 @@ helpful_tab:CreateButton({
 });
 
 helpful_tab:CreateButton({
+	Name = "Teleport to v3";
+	Description = nil;
+	Callback = @native function(_: unknown): ()
+		teleport_service:Teleport(18288004258, Player);
+		return;
+	end,
+});
+
+helpful_tab:CreateButton({
 	Name = "UGC R15 Animations";
 	Description = nil;
 	Callback = @native function(_: unknown): ()
