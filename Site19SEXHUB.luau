@@ -10,6 +10,8 @@ end;
 if getgenv().Loaded then return; end;
 getgenv().Loaded = true;
 
+local client_ac_bypassed = false;
+
 local service: {[string]: Instance} = setmetatable({}, {
 	__index = function(self: {[string]: Instance}, index: string): Instance
 		local ref = cloneref(game:GetService(index));
@@ -359,6 +361,14 @@ helpful_tab:CreateButton({
 	Name = "Remove Barriers";
 	Description = "Allows you to shoot through the fence for example.";
 	Callback = @native function(toggle: boolean): ()
+		if not client_ac_bypassed then
+			return Luna:Notification({
+				Title = "Client Anti-Cheat is not bypassed!";
+				Icon  = "local_police";
+				ImageSource = "Material";
+				Content = "Enable Client Anti-Cheat Bypass first.";
+			});
+		end;
 		for k, v in pairs(workspace.Map:GetDescendants()) do
 			if v and (v:IsDescendantOf(workspace.Map.Barriers) or v:IsDescendantOf(workspace.Map["Surface Barriers"])) then
 				v:Destroy();
@@ -372,6 +382,14 @@ helpful_tab:CreateButton({
 	Name = "Remove Team Blocks";
 	Description = "Removing team blocks so that you can enter MTF spawn as CI, for example.";
 	Callback = @native function(toggle: boolean): ()
+		if not client_ac_bypassed then
+			return Luna:Notification({
+				Title = "Client Anti-Cheat is not bypassed!";
+				Icon  = "local_police";
+				ImageSource = "Material";
+				Content = "Enable Client Anti-Cheat Bypass first.";
+			});
+		end;
 		for k, v in pairs(workspace.Ignore:GetChildren()) do
 			if v and v.Name == "Block" then
 				v:Destroy();
@@ -758,6 +776,7 @@ anti_cheat:CreateToggle({
 	Description = "Bypasses the client AC which detects btools. And other map changes.";
 	CurrentValue = false;
 	Callback = @native function(value: boolean): ()
+		client_ac_bypassed = value;
 		if value then
 			for k, v in pairs(getgc(true)) do
 				if typeof(v) == "function" and debug.getinfo(v).name == "_exploiterKick" then
