@@ -545,25 +545,32 @@ weapon_section_1:CreateToggle({
 		return;
 	end,
 });
+
+local network;
 local toggle_infinite_ammo; toggle_infinite_ammo = @native function(enabled: boolean)
-	local LUA_GC = getgc(true);
-	local Network;
-	local newluaclosure = newlclosure;
-	for _,v in LUA_GC do
-		if type(v) == "table" then
-			if rawget(v, "InvokeServer") then
-				Network = v;
-			elseif rawget(v, "_discharge") then
-				if not enabled then
-					restorefunction(rawget(v, "_discharge"));
-					break;
+	for k, v in pairs(getgc(true)) do
+		if not network then
+			if rawget(v, "OnEvent") and typeof(rawget(v, "OnEvent")) == "function" then
+				network = v;
+				continue;
+			end;
+		end;
+		if typeof(v) == "table" and rawget(v, "_discharge") then
+			if enabled then
+				if not isfunctionhooked(rawget(v, "_discharge")) then
+					local hook; hook = hookfunction(rawget(v, "_discharge"), newcclosure(@native function(...)
+						if not network then return hook(...); end;
+						local self = select(1, ...);
+						network:FireServer("setToolState", "Reload");
+						network:FireServer("setToolState", "Reloaded");
+						rawset(self, "Ammo", 999999*999999);
+						return hook(...);
+					end));
 				end;
-				local hook; hook = hookfunction(rawget(v, "_discharge"), newluaclosure(function(gun_settings)
-					Network:FireServer("setToolState", "Reload");
-					Network:FireServer("setToolState", "Reloaded");
-					gun_settings.Ammo = 999;
-					hook(gun_settings);
-				end));
+			else
+				if isfunctionhooked(rawget(v, "_discharge")) then
+					restorefunction(rawget(v, "_discharge"));
+				end;
 			end;
 		end;
 	end;
@@ -577,18 +584,21 @@ weapon_section_1:CreateToggle({
 		return;
 	end,
 });
+
 weapon_section_1:CreateToggle({
 	Name = "Disable RPM";
 	Description = "Hooks task.wait";
 	Callback = @native function(state: boolean): ()
 		if state then
-			local hook; hook = hookfunction(task.wait, newcclosure(function(...: number?): ()
-				if checkcaller() then return hook(...); end;
-				local time: number? = ...
-				local caller = debug.info(3, "f");
-				if caller and debug.info(caller, "n") == "_activateDischarge" then time = nil :: never; end;
-				return hook(time);
-			end));
+			if not isfunctionhooked(task.wait) then
+				local hook; hook = hookfunction(task.wait, newcclosure(@native function(...)
+					local info = debug.getinfo(2);
+					if info and info.name == "_activateDischarge" then
+						return hook(nil);
+					end;
+					return hook(...);
+				end));
+			end;
 		else
 			if isfunctionhooked(task.wait) then
 				restorefunction(task.wait);
@@ -737,7 +747,7 @@ weapon_section_2:CreateToggle({
 							local hook; hook = hookfunction(rawget(v, "FireServer"), newcclosure(@native function(...)
 								local eventName = select(3, ...);
 								if (eventName and typeof(eventName) == "string") and eventName == "Discharge" then
-									for i = 1, 3  do
+									for i = 1, states.insta_kill_send_count do
 										hook(...)
 									end;
 									return;
@@ -802,6 +812,7 @@ other_section2:CreateLabel({
 	Text = "ESP does NOT have a feature to be toggable.";
 	Style = 3;
 });
+
 other_section2:CreateButton({
 	Name = "Load ESP";
 	Description = "A great ESP for Site-19 made by whiz.sk.";
@@ -817,6 +828,7 @@ other_section2:CreateButton({
 		return loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))();		
 	end,
 });
+
 other_section2:CreateButton({
 	Name = "Load chatlogs";
 	Description = "A great chatlogs UI for Site-19 made by whiz.sk.";
@@ -824,6 +836,7 @@ other_section2:CreateButton({
 		return loadstring(game:HttpGet("https://raw.githubusercontent.com/sleepyBIOS/scripts/refs/heads/main/site19chatlogs.lua"))();
 	end,
 });
+
 Moderation:CreateButton({
 	Name = "Randomize apperance";
 	Description = nil;
@@ -876,6 +889,7 @@ Moderation:CreateToggle({
 		return;
 	end,
 });
+
 Moderation:CreateToggle({
 	Name = "Notifer";
 	Description = "Notifies you when a moderator joinned.";
@@ -896,10 +910,12 @@ Moderation:CreateToggle({
 	end,	
 
 });
+
 anti_cheat:CreateLabel({
 	Text = "Server side AC bypasses has its downsides. these issues cannot be fixed.";
 	Style = 3;
 });
+
 anti_cheat:CreateToggle({
 	Name = "Bypass Server AC";
 	Description = "Fully bypases the server side anti cheat, allowing you to fly and noclip without any problems.";
@@ -910,6 +926,7 @@ anti_cheat:CreateToggle({
 		return;
 	end,
 });
+
 anti_cheat:CreateToggle({
 	Name = "Bypass Client AC";
 	Description = "Bypasses the client AC which detects btools. And other map changes.";
