@@ -1,0 +1,7 @@
+local network = {};
+for k, v in pairs(getgc(true)) do
+	if typeof(v) == "table" and rawget(v, "FireServer") and rawget(v, "InvokeServer") and rawget(v, "OnEvent") then
+		network = v;
+		break;
+	end
+end;
