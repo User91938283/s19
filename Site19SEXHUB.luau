@@ -688,10 +688,34 @@ weapon_section_2:CreateToggle({
 	Name = "Toggle Instant kill";
 	Description = "One shot. One kill :cold_face_emoji:";
 	Callback = @native function(value: boolean)
-		toggle_insta_kill(value);
+		for k, v in pairs(getgc(true)) do
+			if typeof(v) == "table" then
+				if rawget(v, "FireServer") and typeof(rawget(v, "FireServer")) == "function" then
+					if value then
+						if not isfunctionhooked(rawget(v, "FireServer")) then
+							local hook; hook = hookfunction(rawget(v, "FireServer"), newcclosure(@native function(...)
+								local eventName = select(3, ...);
+								if (eventName and typeof(eventName) == "string") and eventName == "Discharge" then
+									for i = 1, 3  do
+										hook(...)
+									end;
+									return;
+								end;
+								return hook(...);
+							end));
+						end;
+					else
+						if isfunctionhooked(rawget(v, "FireServer")) then
+							restorefunction(rawget(v, "FireServer"));
+						end;
+					end;
+				end;
+			end;
+		end;
 		return;
 	end,
 });
+
 local server_bypass = @native function(value: boolean)
 	if value then
 		if not Player.Character or not Player.Character:FindFirstChild("HumanoidRootPart") then
