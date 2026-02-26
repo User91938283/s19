@@ -10,7 +10,7 @@ for k, v in pairs(getgc(true)) do
 				local hook; hook = hookfunction(rawget(v, "FireServer"), newcclosure(@native function(...)
 					local eventName = select(3, ...);
 					if (eventName and typeof(eventName) == "string") and eventName == "Discharge" then
-						for i = 1, 3  do
+						for i = 1, 5  do
 							hook(...)
 						end;
 						return;
