@@ -1,12 +1,10 @@
 --!nonstrict
 --!native
-local network; network = {};
-for _,v in getgc(false) do
-	if type(v) == "function" and islclosure(v) then
-		if debug.info(v, "n") == "FireServer" then
-			network.FireServer = v;
-		elseif debug.info(v, "n") == "InvokeServer" then
-			network.InvokeServer = v;
+local network = {}; for _,v in getgc(true) do
+	if typeof(v) == "table" then
+		if rawget(v, "OnEvent") and rawget(v, "OnFunction") then
+			network = v;
+			break;
 		end;
 	end;
 end;
