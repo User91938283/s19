@@ -472,7 +472,7 @@ weapon_section_1:CreateToggle({
 				if enabled then
 					rawset(rawget(v, "Stats"), "Automatic", true);
 				else
-					if rawget(v, "Model") ~= "Glock 22" then
+					if string.find(rawget(v, "Model"), "Glock") or string.find(rawget(v, "Model"), "Beretta") then
 						rawset(rawget(v, "Stats"), "Automatic", false);
 					end;
 				end;
