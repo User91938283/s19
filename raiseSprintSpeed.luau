@@ -1,13 +1,13 @@
 --!nonstrict
 --!native
 if not hookmetamethod or not newcclosure or not checkcaller then
-  return error("unsupported executor");
+	return error("unsupported executor");
 end;
-local hook; hook = hookmetamethod(game, "__newindex", newcclosure(@native function(table, index, value)
+local hook; hook = hookmetamethod(game, "__newindex", newcclosure(@native function(self, index, value)
 	if not checkcaller() then
 		if index == "WalkSpeed" and value > 10 then
-			return hook(table, index, 30);
+			return hook(self, index, 30);
 		end;
 	end;
-	return hook(table, index, value)
-end), "hook_newindex");
+	return hook(self, index, value);
+end));
