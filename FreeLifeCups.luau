@@ -29,12 +29,12 @@ local teleport_to_location; teleport_to_location = @native function(Cframe)
 		Player.Character:PivotTo(Cframe);
 	end;
 end;
-teleport_to_location(CFrame.new(1008.09027, 15.9999981, -170.578812, 1, -8.93967034e-09, -4.60179981e-05, 8.93900953e-09, 1, -1.43606655e-08, 4.60179981e-05, 1.43602543e-08, 1));
-teleport_to_location(CFrame.new(1008.09027, 15.9999981, -170.578812, 1, -8.93967034e-09, -4.60179981e-05, 8.93900953e-09, 1, -1.43606655e-08, 4.60179981e-05, 1.43602543e-08, 1));
-teleport_to_location(CFrame.new(584.1257934570312, -0.9999967813491821, 153.55552673339844));
-teleport_to_location(CFrame.new(584.1257934570312, -0.9999967813491821, 153.55552673339844));
+--teleport_to_location(CFrame.new(1008.09027, 15.9999981, -170.578812, 1, -8.93967034e-09, -4.60179981e-05, 8.93900953e-09, 1, -1.43606655e-08, 4.60179981e-05, 1.43602543e-08, 1));
+--teleport_to_location(CFrame.new(1008.09027, 15.9999981, -170.578812, 1, -8.93967034e-09, -4.60179981e-05, 8.93900953e-09, 1, -1.43606655e-08, 4.60179981e-05, 1.43602543e-08, 1));
+--teleport_to_location(CFrame.new(584.1257934570312, -0.9999967813491821, 153.55552673339844));
+--teleport_to_location(CFrame.new(584.1257934570312, -0.9999967813491821, 153.55552673339844));
 Player.Character.PrimaryPart.Anchored = true;
-for i = 1, 10 do
+for i = 1, 99 do
 	coroutine.wrap(@native function(...)
 		network:InvokeServer("createCupOf", "LIFE");
 	end)();
