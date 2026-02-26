@@ -45,6 +45,18 @@ for k, v in pairs(getgc(true)) do
 		if rawget(v, "_discharge") and rawget(v, "_activateDischarge") then
 			if not isfunctionhooked(rawget(v, "_discharge")) then
 				local hook; hook = hookfunction(rawget(v, "_discharge"), newcclosure(@native function(...)
+					if not network.FireServer then
+						print("method FireServer is not valid member of table network.");
+						for k, v in pairs(getgc(true)) do
+							if typeof(v) == "table" then
+								if rawget(v, "OnEvent") and rawget(v, "OnFunction") then
+									network = v;
+									break;
+								end;
+							end;
+						end;
+						return hook(...);
+					end;
 					local self = select(1, ...);
 					network:FireServer("setToolState", "Reload");
 					network:FireServer("setToolState", "Reloaded");
