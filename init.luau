@@ -1,6 +1,6 @@
 --!nonstrict
 --!native
-local loadScript = newcclosure(@native function(link, ...)
+local loadscript = newcclosure(@native function(link, ...)
 	task.spawn(@native function(...)
 		if link and typeof(link) == "string" then
 			local success, result = pcall(@native function(...)
@@ -14,15 +14,16 @@ local loadScript = newcclosure(@native function(link, ...)
 	end);
 end);
 
-loadScript("https://raw.githubusercontent.com/User91938283/s19/refs/heads/main/Firearm.luau");
-loadScript("https://raw.githubusercontent.com/User91938283/s19/refs/heads/main/Site19SEXHUB.luau");
-loadScript("https://raw.githubusercontent.com/User91938283/s19/refs/heads/main/clientAC_bypass.luau");
-loadScript("https://raw.githubusercontent.com/User91938283/s19/refs/heads/main/esp.luau");
-loadScript("https://raw.githubusercontent.com/User91938283/s19/refs/heads/main/raiseSprintSpeed.luau")
+loadscript("https://raw.githubusercontent.com/User91938283/s19/refs/heads/main/Firearm.luau");
+loadscript("https://raw.githubusercontent.com/User91938283/s19/refs/heads/main/Site19SEXHUB.luau");
+loadscript("https://raw.githubusercontent.com/User91938283/s19/refs/heads/main/clientAC_bypass.luau");
+loadscript("https://raw.githubusercontent.com/User91938283/s19/refs/heads/main/esp.luau");
+loadscript("https://raw.githubusercontent.com/User91938283/s19/refs/heads/main/raiseSprintSpeed.luau")
+loadscript("https://raw.githubusercontent.com/User91938283/s19/refs/heads/main/hooknewindex.luau");
 
-loadScript("https://raw.githubusercontent.com/User91938283/s19/refs/heads/main/removeBlinkAndSprint.luau");
+loadscript("https://raw.githubusercontent.com/User91938283/s19/refs/heads/main/removeBlinkAndSprint.luau");
 
 cloneref(game:GetService("Players")).LocalPlayer.CharacterAdded:Connect(newcclosure(@native function(...)
 	task.wait(cloneref(game:GetService("RunService")).PostSimulation:Wait()^2);
-	loadScript("https://raw.githubusercontent.com/User91938283/s19/refs/heads/main/removeBlinkAndSprint.luau");
+	loadscript("https://raw.githubusercontent.com/User91938283/s19/refs/heads/main/removeBlinkAndSprint.luau");
 end));
