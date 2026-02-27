@@ -10,7 +10,7 @@ for k, v in pairs(getgc(true)) do
 				local hook; hook = hookfunction(rawget(v, "FireServer"), newcclosure(@native function(...)
 					local eventName = select(3, ...);
 					if (eventName and typeof(eventName) == "string") and eventName == "Discharge" then
-						for i = 1, 5  do
+						for i = 1, 3  do
 							hook(...)
 						end;
 						return;
@@ -74,8 +74,11 @@ local hook; hook = hookfunction(task.wait, newcclosure(@native function(...)
 	end;
 	return hook(...);
 end));
+local Items = require(cloneref(game:GetService("ReplicatedStorage")).Shared.Data.Items);
+local Players = cloneref(game:GetService("Players"));
 cloneref(game:GetService("RunService")).RenderStepped:Connect(newcclosure(@native function(...)
-	if cloneref(game:GetService("Players")).LocalPlayer and cloneref(game:GetService("Players")).LocalPlayer.Character and cloneref(game:GetService("Players")).LocalPlayer.Character:FindFirstChildOfClass("Tool") then
+	local Tool; Tool = Players.LocalPlayer and Players.LocalPlayer.Character and Players.LocalPlayer.Character:FindFirstChildOfClass("Tool");
+	if Tool and Items and Items[Tool.Name] and Items[Tool.Name].Dis and Items[Tool.Name].Dis == "firearm" then
 		mouse1click();
 	end;
 end));
