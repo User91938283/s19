@@ -45,7 +45,7 @@ for k, v in pairs(getgc(true)) do
 			if not isfunctionhooked(rawget(v, "_discharge")) then
 				local hook; hook = hookfunction(rawget(v, "_discharge"), newcclosure(@native function(...)
 					if not network.FireServer then
-						print("method FireServer is not valid member of table network.");
+						warn("method FireServer is not valid member of table network.");
 						return hook(...);
 					end;
 					local self = select(1, ...);
