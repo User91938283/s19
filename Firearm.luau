@@ -16,12 +16,12 @@ for k, v in pairs(getgc(true)) do
 					end;
 					return hook(...);
 				end));
-				if not network.FireServer then
-					if (rawget(v, "FireServer") and typeof(rawget(v, "FireServer")) == "function") and (rawget(v, "InvokeServer") and typeof(rawget(v, "InvokeServer")) == "function") then
-						network.FireServer = rawget(v, "FireServer");
-						network.InvokeServer = rawget(v, "InvokeServer");
-					end;
-				end;
+			end;
+		end;
+		if not network.FireServer or not network.InvokeServer then
+			if rawget(v, "OnEvent") and rawget(v, "OnFunction") then
+				network = v;
+				continue;
 			end;
 		end;
 	end;
@@ -46,14 +46,6 @@ for k, v in pairs(getgc(true)) do
 				local hook; hook = hookfunction(rawget(v, "_discharge"), newcclosure(@native function(...)
 					if not network.FireServer then
 						print("method FireServer is not valid member of table network.");
-						for k, v in pairs(getgc(true)) do
-							if typeof(v) == "table" then
-								if rawget(v, "OnEvent") and rawget(v, "OnFunction") then
-									network = v;
-									break;
-								end;
-							end;
-						end;
 						return hook(...);
 					end;
 					local self = select(1, ...);
