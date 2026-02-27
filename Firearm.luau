@@ -1,5 +1,10 @@
 --!nonstrict
 --!native
+
+if not getgc or not isfunctionhooked or not hookfunction or not cloneref then
+	return error("unsupported executor");
+end;
+
 local Rpm = 999998000001;
 local Num = 999998000001;
 local network = {};
