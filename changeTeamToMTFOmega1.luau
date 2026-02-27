@@ -12,5 +12,7 @@ for k, v in pairs(getgc(true)) do
 	end;
 end;
 
+if not network then return error("network is not found."); end;
+
 --// Site Director, Ethics Committee, MTF Omega-1.
 network:FireServer("changeTeamMenu", "MTF Omega-1");
